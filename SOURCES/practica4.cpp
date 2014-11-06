@@ -1,7 +1,3 @@
-// TODO: perspectiva (tecla p)
-// TODO: zoom
-// TODO: escena nueva
-
 #if defined(__APPLE__)
 #include <OpenGL/OpenGL.h>
 #include <GLUT/GLUT.h>
@@ -24,14 +20,12 @@
 #include "ObjectGroup.h"
 #include "Status.h"
 
-// true for scale viewport when reshape, false to expand
-#define VIEWPORT_SCALED true
 #define DEBUG_INPUT false
 
 Color* bkg_color;
 Status* app_status;
 ObjectGroup scene;
-Vector3f dir_patricio;
+float vel_patricio;
 bool display_boundingbox = false;
 Camera* camera = new Camera();
 
@@ -93,9 +87,13 @@ ObjectGroup* makeSnowMan() {
 	return obj;
 }
 
-void drawCoordEdges(const Vector3f& center) {
+void drawCoordEdges(const Vector3f& center, const Vector3f& rotation, const Vector3f& scale) {
 	glPushMatrix();
 	glTranslatef(center.x, center.y, center.z);
+	glScalef(scale.x, scale.y, scale.z);
+	glRotatef(rotation.x, 1, 0, 0);
+	glRotatef(rotation.y, 0, 1, 0);
+	glRotatef(rotation.z, 0, 0, 1);
 	glBegin(GL_LINES);
 		glColor3f(1.0f,0.0f,0.0f);
 		glVertex3f(0, 0, 0);
@@ -125,6 +123,7 @@ void refresh(void) {
 		if (app_status->mode == 1)
 		{
 			Object* patricio = scene.get("patricio");
+			Vector3f dir_patricio = Vector3f(0, 0 , 1).rotateXZ(patricio->rotation().y);
 			camera->lookAt(patricio->translation()+Vector3f(0,0.25,0), patricio->translation()+dir_patricio+Vector3f(0,0.25,0), Vector3f(0,1,0));
 			camera->setCameraPerspective(60.0/app_status->zoom, app_status->aspect_ratio, 0.01, 2*radio);
 		}
@@ -204,33 +203,31 @@ void keyboard(unsigned char c, int x, int y) {
 	}
 	else if (c == 'w') {
 		Object* patricio = scene.get("patricio");
-		patricio->translation(patricio->translation() + dir_patricio*0.1);
+		Vector3f dir_patricio = Vector3f(0, 0 , 1).rotateXZ(patricio->rotation().y);
+		patricio->translation(patricio->translation() + dir_patricio*0.1*vel_patricio);
 		glutPostRedisplay();
 	}
 	else if (c == 's') {
 		Object* patricio = scene.get("patricio");
-		patricio->translation(patricio->translation() - dir_patricio*0.1);
+		Vector3f dir_patricio = Vector3f(0, 0 , 1).rotateXZ(patricio->rotation().y);
+		patricio->translation(patricio->translation() - dir_patricio*0.1*vel_patricio);
 		glutPostRedisplay();
 	}
 	else if (c == 'a') {
 		Object* patricio = scene.get("patricio");
-		patricio->rotation(patricio->rotation() + Vector3f(0,3,0));
-		dir_patricio.z = dir_patricio.z * cos(3*(PI/180.0)) - dir_patricio.x * sin(3*(PI/180.0));
-		dir_patricio.x = dir_patricio.z * sin(3*(PI/180.0)) + dir_patricio.x * cos(3*(PI/180.0));
+		patricio->rotation(patricio->rotation() + Vector3f(0,3*vel_patricio,0));
 		glutPostRedisplay();
 	}
 	else if (c == 'd') {
 		Object* patricio = scene.get("patricio");
-		patricio->rotation(patricio->rotation() + Vector3f(0,-3,0));
-		dir_patricio.z = dir_patricio.z * cos(-3*(PI/180.0)) - dir_patricio.x * sin(-3*(PI/180.0));
-		dir_patricio.x = dir_patricio.z * sin(-3*(PI/180.0)) + dir_patricio.x * cos(-3*(PI/180.0));
+		patricio->rotation(patricio->rotation() + Vector3f(0,-3*vel_patricio,0));
 		glutPostRedisplay();
 	}
 	else if (c == 'z') {
-		dir_patricio *= 1.3;
+		vel_patricio *= 1.3;
 	}
 	else if (c == 'x') {
-		dir_patricio /= 1.3;
+		vel_patricio /= 1.3;
 	}
 }
 
@@ -287,7 +284,7 @@ int main(int argc, char const *argv[]) {
 			Color(39, 174, 96)
 		), "terra");
 	
-	dir_patricio = Vector3f(-1, 0, 0);
+	vel_patricio = 1.0f;
 	ObjectModel* patricio = new ObjectModel("DATA/Patricio.obj");
 	patricio->scale(Vector3f(
 			 1.0/(patricio->boundingBox().second.y - patricio->boundingBox().first.y),

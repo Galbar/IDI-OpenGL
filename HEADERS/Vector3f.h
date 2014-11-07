@@ -36,6 +36,7 @@ public:
 	Vector3f& operator*= (const float& e);
 	Vector3f& operator/= (const float& e);
 	Vector3f& normalize();
+	Vector3f normalized() const;
 	float length() const;
 	float length();
 	float dotProduct(const Vector3f& v) const;
@@ -43,6 +44,9 @@ public:
 	Vector3f& rotateXZ(float degrees);
 	Vector3f& rotateXY(float degrees);
 	Vector3f& rotateYZ(float degrees);
+	Vector3f rotatedXZ(float degrees) const;
+	Vector3f rotatedXY(float degrees) const;
+	Vector3f rotatedYZ(float degrees) const;
 	void print() const;
 };
 

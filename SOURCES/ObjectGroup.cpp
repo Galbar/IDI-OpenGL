@@ -25,10 +25,10 @@ std::pair<Vector3f, Vector3f> ObjectGroup::boundingBox() const{
 			if (l_bounding_box.second.z < bb.second.z) l_bounding_box.second.z = bb.second.z;
 		}
 	}
-	l_bounding_box.first *= p_scale;
-	l_bounding_box.first += p_translation;
-	l_bounding_box.second *= p_scale;
-	l_bounding_box.second += p_translation;
+	l_bounding_box.first *= scale();
+	l_bounding_box.first += translation();
+	l_bounding_box.second *= scale();
+	l_bounding_box.second += translation();
 	return l_bounding_box;
 }
 

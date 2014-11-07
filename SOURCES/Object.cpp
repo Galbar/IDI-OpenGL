@@ -4,7 +4,7 @@ Object::Object() {
 	p_translation  = Vector3f();
 	p_rotation     = Vector3f();
 	p_scale        = Vector3f(1.0f, 1.0f, 1.0f);
-	std::pair<Vector3f, Vector3f> p_bounding_box = std::pair<Vector3f, Vector3f>(Vector3f(),Vector3f());
+	p_bounding_box = std::pair<Vector3f, Vector3f>(Vector3f(),Vector3f());
 }
 
 void Object::draw() const{
@@ -101,11 +101,13 @@ std::pair<Vector3f, Vector3f> Object::boundingBox() const{
 	std::pair<Vector3f, Vector3f> l_bounding_box = p_bounding_box;
 
 	Vector3f l_center = (l_bounding_box.second + l_bounding_box.first)/2;
+	
 	l_bounding_box.first -= l_center;
-	l_bounding_box.first *= p_scale;
-	l_bounding_box.first += p_translation;
+	l_bounding_box.first *= scale();
+	l_bounding_box.first += translation();
+
 	l_bounding_box.second -= l_center;
-	l_bounding_box.second *= p_scale;
-	l_bounding_box.second += p_translation;
+	l_bounding_box.second *= scale();
+	l_bounding_box.second += translation();
 	return l_bounding_box;
 }

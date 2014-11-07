@@ -26,7 +26,7 @@ struct Color {
 		this->b = (float)b/255.0f;
 	}
 
-	void print() {
+	void print() const{
 		std::cout << '(' << r << ", " << g << ", " << b << ')' << std::endl;
 	}
 };

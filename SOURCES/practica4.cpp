@@ -34,13 +34,22 @@ void initGlut(int argc, char const *argv[]) {
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 	glutInitWindowPosition(100, 100);
 	glutInitWindowSize(app_status->window_width, app_status->window_height);
-	glutCreateWindow("IDI: Practiques OpenGL qasd");
+	glutCreateWindow("IDI: Practiques OpenGL");
 }
 
 void initGL() {
 	glClearColor(bkg_color->r, bkg_color->g, bkg_color->b, 1);
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_NORMALIZE);
+	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
+	std::cerr << glGetString(GL_VERSION) << std::endl;
+	GLfloat light0_ambient_color[3] = {0.0f, 0.0f, 0.0f};
+	GLfloat light0_diffuse_color[3] = {1.0f, 1.0f, 1.0f};
+	GLfloat light0_specular_color[3] = {1.0f, 1.0f, 0.0f};
+	glLightfv(GL_LIGHT0, GL_AMBIENT, light0_ambient_color);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, light0_diffuse_color);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, light0_specular_color);
 }
 
 void initStatus() {
@@ -125,7 +134,7 @@ void refresh(void) {
 			Object* patricio = scene.get("patricio");
 			Vector3f dir_patricio = Vector3f(0, 0 , 1).rotateXZ(patricio->rotation().y);
 			camera->lookAt(patricio->translation()+Vector3f(0,0.25,0), patricio->translation()+dir_patricio+Vector3f(0,0.25,0), Vector3f(0,1,0));
-			camera->setCameraPerspective(60.0/app_status->zoom, app_status->aspect_ratio, 0.01, 2*radio);
+			camera->setCameraPerspective(90.0/app_status->zoom, app_status->aspect_ratio, 0.01, 2*radio);
 		}
 		else {
 			camera->translate(Vector3f(0, 0, -2*radio));
@@ -228,6 +237,10 @@ void keyboard(unsigned char c, int x, int y) {
 	}
 	else if (c == 'x') {
 		vel_patricio /= 1.3;
+	}
+	else if (c == 'i') {
+		glIsEnabled(GL_LIGHTING)? glDisable(GL_LIGHTING) : glEnable(GL_LIGHTING);
+		glutPostRedisplay();
 	}
 }
 

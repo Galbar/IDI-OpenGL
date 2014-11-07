@@ -71,6 +71,26 @@ Vector3f& Vector3f::rotateYZ(float degrees) {
 	return *this;
 }
 
+Vector3f Vector3f::normalized() const{
+	Vector3f r = *this;
+	return r.normalize();
+}
+
+Vector3f Vector3f::rotatedXZ(float degrees) const{
+	Vector3f r = *this;
+	return r.rotateXZ(degrees);
+}
+
+Vector3f Vector3f::rotatedXY(float degrees) const{
+	Vector3f r = *this;
+	return r.rotateXY(degrees);
+}
+
+Vector3f Vector3f::rotatedYZ(float degrees) const{
+	Vector3f r = *this;
+	return r.rotateYZ(degrees);
+}
+
 Vector3f& Vector3f::operator+= (const Vector3f& v) {
 	*this = Vector3f(x + v.x, y + v.y, z + v.z);
 	return *this;

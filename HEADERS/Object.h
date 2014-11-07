@@ -14,8 +14,10 @@
 #include "Vector3f.h"
 
 class Object {
-protected:
+private:
 	Vector3f p_translation, p_rotation, p_scale;
+	
+protected:
 	std::pair<Vector3f, Vector3f> p_bounding_box;
 
 public:

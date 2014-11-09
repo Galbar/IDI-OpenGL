@@ -2,19 +2,19 @@
 #define OBJECT_CONE
 
 #include <string>
-#include "Object.h"
+#include "ObjectMonoColor.h"
 #include "Color.h"
 
-class ObjectCone: public Object {
-protected:
-	Vector3f p_vertex;
+class ObjectCone: public ObjectMonoColor {
+private:
 	float p_radio, p_height;
 	int p_faces;
-	Color p_color;
 
+	void init(const Vector3f& p, float radio, float height, int faces, const Color& color, float shininess);
+	virtual void drawMethod() const;
+	
 public:
-	ObjectCone(const Vector3f& p, float radio, float height,int faces, const Color& c);
-
-	void onDraw() const;
+	ObjectCone(const Vector3f& p, float radio, float height,int faces, const Color& color);
+	ObjectCone(const Vector3f& p, float radio, float height, int faces, const Color& color, float shininess);
 };
 #endif

@@ -154,6 +154,10 @@ float Vector3f::dotProduct(const Vector3f& v) const {
 	return x * v.x + y * v.y + z * v.z;
 }
 
+Vector3f Vector3f::crossProduct(const Vector3f& v) const {
+	return Vector3f(y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x);
+}
+
 Vector3f operator+ (Vector3f u, const Vector3f& v) {
 	return u += v;
 }

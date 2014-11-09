@@ -21,8 +21,18 @@ void Object::draw() const{
 }
 
 void Object::drawBoundingBox(const Vector3f& min, const Vector3f& max) {
+	bool is_lighting = (glIsEnabled(GL_LIGHTING) == GL_TRUE);
 	glBegin(GL_LINES);
+	if (is_lighting) {
+		GLfloat blue[] = { 0.0f, 1.0f, 0.0f, 1.0f };
+		glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 80.0f);
+		glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, blue);
+		glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, blue);
+		glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, blue);
+	}
+	else {
 		glColor3f(0, 1, 0);
+	}
 		// eje y
 		glVertex3f(max.x, max.y, max.z);
 		glVertex3f(max.x, min.y, max.z);

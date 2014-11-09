@@ -40,6 +40,7 @@ public:
 	float length() const;
 	float length();
 	float dotProduct(const Vector3f& v) const;
+	Vector3f crossProduct(const Vector3f& v) const;
 	std::vector<float> asStdVector() const;
 	Vector3f& rotateXZ(float degrees);
 	Vector3f& rotateXY(float degrees);

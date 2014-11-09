@@ -2,19 +2,19 @@
 #define OBJECT_SPHERE
 
 #include <string>
-#include "Object.h"
+#include "ObjectMonoColor.h"
 #include "Color.h"
 
-class ObjectSphere: public Object {
-protected:
-	Vector3f p_vertex;
+class ObjectSphere: public ObjectMonoColor {
+private:
 	float p_radio;
 	int p_faces;
-	Color p_color;
+
+	virtual void drawMethod() const;
+	void init(const Vector3f& p, float radio, int faces, const Color& color, float shininess);
 
 public:
-	ObjectSphere(const Vector3f& p, float radio, int faces, const Color& c);
-
-	void onDraw() const;
+	ObjectSphere(const Vector3f& p, float radio, int faces, const Color& color);
+	ObjectSphere(const Vector3f& p, float radio, int faces, const Color& color, float shininess);
 };
 #endif

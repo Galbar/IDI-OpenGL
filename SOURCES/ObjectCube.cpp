@@ -1,18 +1,25 @@
 #include "ObjectCube.h"
 
-ObjectCube::ObjectCube(const Vector3f& p, float width, float height, float depth, const Color& c) {
-	p_vertex = Vector3f();
+void ObjectCube::init(const Vector3f& p, float width, float height, float depth, const Color& color, float shininess) {
 	scale(Vector3f(width, height, depth));
 	translation(p);
 	
-	p_color = c;
+	p_color = color;
+	p_shininess = shininess;
 
 	p_bounding_box = 
-		std::pair<Vector3f, Vector3f>(p_vertex - Vector3f(0.5, 0.5, 0.5),
-									  p_vertex + Vector3f(0.5, 0.5, 0.5));
+		std::pair<Vector3f, Vector3f>(Vector3f() - Vector3f(0.5, 0.5, 0.5),
+									  Vector3f(0.5, 0.5, 0.5));
 }
 
-void ObjectCube::onDraw() const{
-	glColor4f(p_color.r, p_color.g, p_color.b, 1.0f);
+ObjectCube::ObjectCube(const Vector3f& p, float width, float height, float depth, const Color& color) {
+	init(p, width, height, depth, color, 100.0f);
+}
+
+ObjectCube::ObjectCube(const Vector3f& p, float width, float height, float depth, const Color& color, float shininess) {
+	init(p, width, height, depth, color, shininess);
+}
+
+void ObjectCube::drawMethod() const{
 	glutSolidCube(1);
 }

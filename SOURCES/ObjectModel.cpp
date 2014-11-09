@@ -1,6 +1,6 @@
 #include "ObjectModel.h"
 
-ObjectModel::ObjectModel(const std::string& src): Object() {
+ObjectModel::ObjectModel(const std::string& src) {
 	p_model = Model();
 	p_model.load(src);
 

@@ -11,7 +11,7 @@ LIBS      = -lglut -lGL -lGLU
 EXEC      = practica4
 
 MAIN      = practica4
-CLASSES   = Mouse Vector3f Model Object ObjectModel ObjectPlane ObjectGroup ObjectSphere ObjectCone ObjectCube Camera
+CLASSES   = Mouse Vector3f Model Object ObjectModel ObjectMonoColor ObjectPlane ObjectGroup ObjectSphere ObjectCone ObjectCube Camera
 DEFS      = Color Status
 
 DEPS      = $(patsubst %, $(IDIR)/%.h,$(DEFS)) $(patsubst %, $(IDIR)/%.h,$(CLASSES))

@@ -6,7 +6,7 @@
 #include "Model.h"
 
 class ObjectModel: public Object {
-protected:
+private:
 	Model p_model;
 	std::pair<Vector3f, Vector3f> calcBoundingBox() const;
 public:

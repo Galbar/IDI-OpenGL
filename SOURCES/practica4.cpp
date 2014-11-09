@@ -134,7 +134,7 @@ void refresh(void) {
 			Object* patricio = scene.get("patricio");
 			Vector3f dir_patricio = Vector3f(0, 0 , 1).rotateXZ(patricio->rotation().y);
 			camera->lookAt(patricio->translation()+Vector3f(0,0.25,0), patricio->translation()+dir_patricio+Vector3f(0,0.25,0), Vector3f(0,1,0));
-			camera->setCameraPerspective(90.0/app_status->zoom, app_status->aspect_ratio, 0.01, 2*radio);
+			camera->setCameraPerspective(60.0/app_status->zoom, app_status->aspect_ratio, 0.01, 2*radio);
 		}
 		else {
 			camera->translate(Vector3f(0, 0, -2*radio));
@@ -164,7 +164,16 @@ void refresh(void) {
 			scene.drawBoundingBox();
 			// Dibuixar esfera contenidora
 			glPushMatrix();
-			glColor3f(0, 1, 1);
+			if (glIsEnabled(GL_LIGHTING) == GL_TRUE) {
+				GLfloat blue[] = { 0.0f, 1.0f, 1.0f, 1.0f };
+				glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 128.0f);
+				glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, blue);
+				glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, blue);
+				glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, blue);
+			}
+			else {
+				glColor3f(0, 1, 1);
+			}
 			glTranslatef(center.x, center.y, center.z);
 			glutWireSphere(radio, 15, 15);
 			glPopMatrix();
@@ -291,9 +300,9 @@ int main(int argc, char const *argv[]) {
 	ObjectGroup objs = ObjectGroup();
 	objs.add(new ObjectPlane(
 			Vector3f(-5, 0, -5),
-			Vector3f(5, 0, -5),
-			Vector3f(5, 0, 5),
 			Vector3f(-5, 0, 5),
+			Vector3f(5, 0, 5),
+			Vector3f(5, 0, -5),
 			Color(39, 174, 96)
 		), "terra");
 	

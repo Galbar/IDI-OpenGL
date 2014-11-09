@@ -8,7 +8,7 @@
 #include "Model.h"
 
 class ObjectGroup: public Object {
-protected:
+private:
 	std::map<std::string, std::unique_ptr<Object>> p_children;
 
 public:

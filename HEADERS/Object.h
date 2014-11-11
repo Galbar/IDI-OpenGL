@@ -18,9 +18,16 @@ private:
 	Vector3f p_translation, p_rotation, p_scale;
 	
 protected:
+	bool p_normals_by_vertex;
 	std::pair<Vector3f, Vector3f> p_bounding_box;
 
 public:
+	enum class NormalMode
+	{
+		BY_FACE,
+		BY_VERTEX
+	};
+
 	Object();
 	void draw() const;
 	static void drawBoundingBox(const Vector3f& max, const Vector3f& min);
@@ -34,6 +41,9 @@ public:
 	const Vector3f& scale() const;
 	virtual std::pair<Vector3f, Vector3f> boundingBox() const;
 	const std::pair<Vector3f, Vector3f>& initialBoundingBox() const;
+	virtual void setNormalMode(NormalMode mode);
+	NormalMode getNormalMode();
+
 };
 
 #endif

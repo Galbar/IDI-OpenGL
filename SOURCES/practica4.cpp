@@ -21,7 +21,7 @@
 #include "Status.h"
 
 #define DEBUG_INPUT false
-
+bool smooth_shades = true;
 Color* bkg_color;
 Status* app_status;
 ObjectGroup scene;
@@ -249,6 +249,21 @@ void keyboard(unsigned char c, int x, int y) {
 	}
 	else if (c == 'i') {
 		glIsEnabled(GL_LIGHTING)? glDisable(GL_LIGHTING) : glEnable(GL_LIGHTING);
+		glutPostRedisplay();
+	}
+	else if (c == 'n') {
+		if (scene.getNormalMode() == Object::NormalMode::BY_VERTEX)
+			scene.setNormalMode(Object::NormalMode::BY_FACE);
+		else
+			scene.setNormalMode(Object::NormalMode::BY_VERTEX);
+		glutPostRedisplay();
+	}
+	else if (c == 'm') {
+		if (smooth_shades)
+			glShadeModel(GL_FLAT);
+		else
+			glShadeModel(GL_SMOOTH);
+		smooth_shades = not smooth_shades;
 		glutPostRedisplay();
 	}
 }

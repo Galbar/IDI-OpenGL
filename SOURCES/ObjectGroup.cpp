@@ -70,3 +70,10 @@ void ObjectGroup::drawBoundingBox() const {
 		it->second->scale(s);
 	}
 }
+
+void ObjectGroup::setNormalMode(NormalMode mode) {
+	p_normals_by_vertex = mode == NormalMode::BY_VERTEX? true : false;
+	for (auto it = p_children.begin(); it!=p_children.end(); ++it) {
+		it->second->setNormalMode(mode);
+	}
+}

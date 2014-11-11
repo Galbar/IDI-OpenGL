@@ -1,10 +1,11 @@
 #include "Object.h"
 
 Object::Object() {
-	p_translation  = Vector3f();
-	p_rotation     = Vector3f();
-	p_scale        = Vector3f(1.0f, 1.0f, 1.0f);
-	p_bounding_box = std::pair<Vector3f, Vector3f>(Vector3f(),Vector3f());
+	p_translation       = Vector3f();
+	p_rotation          = Vector3f();
+	p_scale             = Vector3f(1.0f, 1.0f, 1.0f);
+	p_bounding_box      = std::pair<Vector3f, Vector3f>(Vector3f(),Vector3f());
+	p_normals_by_vertex = true;
 }
 
 void Object::draw() const{
@@ -120,4 +121,12 @@ std::pair<Vector3f, Vector3f> Object::boundingBox() const{
 	l_bounding_box.second *= scale();
 	l_bounding_box.second += translation();
 	return l_bounding_box;
+}
+
+void Object::setNormalMode(NormalMode mode) {
+	p_normals_by_vertex = mode == NormalMode::BY_VERTEX? true : false;
+}
+
+Object::NormalMode Object::getNormalMode() {
+	return p_normals_by_vertex? NormalMode::BY_VERTEX : NormalMode::BY_FACE;
 }

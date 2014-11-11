@@ -40,7 +40,7 @@ void ObjectModel::onDraw() const{
 		auto n20 = f.normalC[0];
 		auto n21 = f.normalC[1];
 		auto n22 = f.normalC[2];
-		if (p_model.normals().size() != 0) {
+		if (p_normals_by_vertex and p_model.normals().size() != 0) {
 			n00 = p_model.normals()[f.n[0]+0];
 			n01 = p_model.normals()[f.n[0]+1];
 			n02 = p_model.normals()[f.n[0]+2];

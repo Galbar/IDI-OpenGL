@@ -20,9 +20,9 @@ public:
 	std::map<std::string, std::unique_ptr<Object>>::const_iterator begin() const;
 	std::map<std::string, std::unique_ptr<Object>>::const_iterator end() const;
 	void onDraw() const;
-	void drawBoundingBox() const;
-
+	virtual void drawBoundingBox() const;
 	std::pair<Vector3f, Vector3f> boundingBox() const;
-	
+
+	void setNormalMode(NormalMode mode);
 };
 #endif

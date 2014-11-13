@@ -32,7 +32,7 @@ std::pair<Vector3f, Vector3f> ObjectGroup::boundingBox() const{
 	return l_bounding_box;
 }
 
-bool ObjectGroup::add(Object* obj, std::string id) {
+bool ObjectGroup::add(std::string id, Object* obj) {
 	return p_children.insert(std::pair<std::string, std::unique_ptr<Object>>(id, std::unique_ptr<Object>(obj))).second;
 }
 
@@ -60,15 +60,18 @@ void ObjectGroup::onDraw() const{
 
 void ObjectGroup::drawBoundingBox() const {
 	Object::drawBoundingBox();
-	for (auto it = p_children.begin(); it!=p_children.end(); ++it) {
-		Vector3f t = it->second->translation();
-		Vector3f s = it->second->scale();
-		it->second->translation(t + translation());
-		it->second->scale(s * scale());
-		it->second->drawBoundingBox();
-		it->second->translation(t);
-		it->second->scale(s);
-	}
+	Vector3f l_center = (p_bounding_box.second + p_bounding_box.first)/2;
+	glPushMatrix();
+		glTranslatef(translation().x, translation().y, translation().z);
+		glScalef(scale().x, scale().y, scale().z);
+		glRotatef(rotation().x, 1, 0, 0);
+		glRotatef(rotation().y, 0, 1, 0);
+		glRotatef(rotation().z, 0, 0, 1);
+		glTranslatef(-l_center.x, -l_center.y, -l_center.z);
+		for (auto it = p_children.begin(); it!=p_children.end(); ++it) {
+			it->second->drawBoundingBox();
+		}
+	glPopMatrix();
 }
 
 void ObjectGroup::setNormalMode(NormalMode mode) {

@@ -10,7 +10,7 @@ void ObjectCone::init(const Vector3f& p, float radio, float height, int faces, c
 	p_shininess = shininess;
 
 	p_bounding_box = 
-		std::pair<Vector3f, Vector3f>(Vector3f() - Vector3f(p_radio, p_radio, 0),
+		std::pair<Vector3f, Vector3f>(-Vector3f(p_radio, p_radio, 0),
 									  Vector3f(p_radio, p_radio, p_height));
 }
 

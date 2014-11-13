@@ -28,6 +28,13 @@ ObjectGroup scene;
 float vel_patricio;
 bool display_boundingbox = false;
 Camera* camera = new Camera();
+int light0_vertex = 0;
+Vector3f vertex_terra[4] = {
+	Vector3f(-5, 0, -5),
+	Vector3f(-5, 0, 5),
+	Vector3f(5, 0, 5),
+	Vector3f(5, 0, -5)
+};
 
 void initGlut(int argc, char const *argv[]) {
 	glutInit(&argc, (char **)argv);
@@ -42,21 +49,40 @@ void initGL() {
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_NORMALIZE);
 	glEnable(GL_LIGHTING);
+	glEnable(GL_CULL_FACE);
+	GLfloat scene_ambient_color[4] = {0.0f, 0.0f, 0.0f, 1.0f};
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, scene_ambient_color);
+	// LIGHT0
 	glEnable(GL_LIGHT0);
-	std::cerr << glGetString(GL_VERSION) << std::endl;
-	GLfloat light0_ambient_color[3] = {0.0f, 0.0f, 0.0f};
-	GLfloat light0_diffuse_color[3] = {1.0f, 1.0f, 1.0f};
-	GLfloat light0_specular_color[3] = {1.0f, 1.0f, 0.0f};
+	GLfloat light0_ambient_color[4] = {0.0f, 0.0f, 0.0f, 1.0f};
+	GLfloat light0_diffuse_color[4] = {1.0f, 1.0f, 0.5f, 1.0f};
+	GLfloat light0_specular_color[4] = {1.0f, 1.0f, 0.2f, 1.0f};
 	glLightfv(GL_LIGHT0, GL_AMBIENT, light0_ambient_color);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, light0_diffuse_color);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, light0_specular_color);
+	// LIGHT1
+	GLfloat light1_ambient_color[4] = {0.0f, 0.0f, 0.0f, 1.0f};
+	GLfloat light1_diffuse_color[4] = {1.0f, 1.0f, 1.0f, 1.0f};
+	GLfloat light1_specular_color[4] = {1.0f, 1.0f, 1.0f, 1.0f};
+	glEnable(GL_LIGHT1);
+	glLightfv(GL_LIGHT1, GL_AMBIENT, light1_ambient_color);
+	glLightfv(GL_LIGHT1, GL_DIFFUSE, light1_diffuse_color);
+	glLightfv(GL_LIGHT1, GL_SPECULAR, light1_specular_color);
+	// LIGHT2
+	GLfloat light2_ambient_color[4] = {0.0f, 0.0f, 0.0f, 1.0f};
+	GLfloat light2_diffuse_color[4] = {1.0f, 1.0f, 1.0f, 1.0f};
+	GLfloat light2_specular_color[4] = {1.0f, 1.0f, 1.0f, 1.0f};
+	glEnable(GL_LIGHT2);
+	glLightfv(GL_LIGHT2, GL_AMBIENT, light2_ambient_color);
+	glLightfv(GL_LIGHT2, GL_DIFFUSE, light2_diffuse_color);
+	glLightfv(GL_LIGHT2, GL_SPECULAR, light2_specular_color);
 }
 
 void initStatus() {
 	app_status->mode = 0;
 	app_status->submode = 0;
 
-	app_status->scene_rotation = Vector3f();
+	app_status->scene_rotation = Vector3f(30, 30, 0);
 	app_status->scene_translation = Vector3f();
 	app_status->scene_scale = Vector3f(1, 1, 1);
 
@@ -82,17 +108,24 @@ void printHelp() {
 		  << "  d:     fer que el patricio giri cap a la dreta" << std::endl
 		  << "  z:     augmentar la velocitat del patricio" << std::endl
 		  << "  x:     disminuir la velocitat del patricio" << std::endl
+		  << "  i:     activar/desactivar iluminació" << std::endl
+		  << "  n:     intercanviar normal per cara/vertex" << std::endl
+		  << "  m:     canviar la posició de la llum 0" << std::endl
+		  << "  S:     intercanviar el shade model smooth/flat" << std::endl
+		  << "  0:     activar/desactivar llum 0" << std::endl
+		  << "  1:     activar/desactivar llum 1" << std::endl
+		  << "  2:     activar/desactivar llum 2" << std::endl
 		  << "  [Esc]: tancar aplicació" << std::endl
 		  << "Accions amb el ratolí:" << std::endl
-		  << "  LBtn:   arrosegar vertical i horitzontalment per girar al voltant de l'escena" << std::endl
-		  << "  RBtn:   arrosegar verticalment per fer zoom" << std::endl << std::endl;
+		  << "  LBtn:  arrosegar vertical i horitzontalment per girar al voltant de l'escena" << std::endl
+		  << "  RBtn:  arrosegar verticalment per fer zoom" << std::endl << std::endl;
 }
 
 ObjectGroup* makeSnowMan() {
 	ObjectGroup* obj = new ObjectGroup();
-	obj->add(new ObjectSphere(Vector3f(0, 0.5, 0), 0.5, 15, Color(255, 255, 255)), "cuerpo");
-	obj->add(new ObjectSphere(Vector3f(0, 1.2, 0), 0.25, 15, Color(255, 255, 255)), "cara");
-	obj->add(new ObjectCone(Vector3f(0, 1.2, 0.25), 0.05, 0.2, 10, Color(1.0f, 0.2f, 0.2f)), "nariz");
+	obj->add("cuerpo", new ObjectSphere(Vector3f(0, 0.5, 0), 0.5, 15, Color(255, 255, 255), 128));
+	obj->add("cara", new ObjectSphere(Vector3f(0, 1.2, 0), 0.25, 15, Color(255, 255, 255), 128));
+	obj->add("nariz", new ObjectCone(Vector3f(0, 1.2, 0.25), 0.05, 0.2, 10, Color(1.0f, 0.2f, 0.2f), 128));
 	return obj;
 }
 
@@ -125,15 +158,15 @@ void refresh(void) {
 	Vector3f center = ((scene.boundingBox().second + scene.boundingBox().first) / 2);
 	radio = (scene.boundingBox().second - scene.boundingBox().first).length()/2;
 	
+	Object* patricio = scene.get("patricio");
+	Vector3f dir_patricio = Vector3f(0, 0 , 1).rotateXZ(patricio->rotation().y).normalized();
+
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	camera->reset();
 	glPushMatrix();
-		if (app_status->mode == 1)
-		{
-			Object* patricio = scene.get("patricio");
-			Vector3f dir_patricio = Vector3f(0, 0 , 1).rotateXZ(patricio->rotation().y);
-			camera->lookAt(patricio->translation()+Vector3f(0,0.25,0), patricio->translation()+dir_patricio+Vector3f(0,0.25,0), Vector3f(0,1,0));
+		if (app_status->mode == 1) {
+			camera->lookAt(patricio->translation()+Vector3f(0,0.25,0)+dir_patricio*0.1, patricio->translation()+dir_patricio+Vector3f(0,0.25,0), Vector3f(0,1,0));
 			camera->setCameraPerspective(60.0/app_status->zoom, app_status->aspect_ratio, 0.01, 2*radio);
 		}
 		else {
@@ -156,8 +189,15 @@ void refresh(void) {
 			}
 		}
 		
+		// LIGHT0
+		GLfloat light0_position[4] = {vertex_terra[light0_vertex].x, vertex_terra[light0_vertex].y+1.5f, vertex_terra[light0_vertex].z, 1.0f};
+		glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
+		// LIGHT2
+		GLfloat light2_position[4] = {patricio->translation().x+dir_patricio.x*0.1f, patricio->translation().y+dir_patricio.y*0.1f+0.25f, patricio->translation().z+dir_patricio.z*0.1f, 1.0f};
+		glLightfv(GL_LIGHT2, GL_POSITION, light2_position);
+
 		if (app_status->mode != 1)
-			scene.get("patricio")->draw();
+			patricio->draw();
 
 		objs->draw();
 		if (display_boundingbox) {
@@ -195,6 +235,7 @@ void keyboard(unsigned char c, int x, int y) {
 		exit(0);
 	else if (c == 'r') {
 		initStatus();
+		initGL();
 	}
 	else if (c == 'b') {
 		display_boundingbox = not display_boundingbox;
@@ -258,12 +299,30 @@ void keyboard(unsigned char c, int x, int y) {
 			scene.setNormalMode(Object::NormalMode::BY_VERTEX);
 		glutPostRedisplay();
 	}
-	else if (c == 'm') {
+	else if (c == 'S') {
 		if (smooth_shades)
 			glShadeModel(GL_FLAT);
 		else
 			glShadeModel(GL_SMOOTH);
 		smooth_shades = not smooth_shades;
+		glutPostRedisplay();
+	}
+	else if (c == '0') {
+		glIsEnabled(GL_LIGHT0)? glDisable(GL_LIGHT0) : glEnable(GL_LIGHT0);
+		glutPostRedisplay();
+	}
+	else if (c == '1') {
+		glIsEnabled(GL_LIGHT1)? glDisable(GL_LIGHT1) : glEnable(GL_LIGHT1);
+		glutPostRedisplay();
+	}
+	else if (c == '2') {
+		glIsEnabled(GL_LIGHT2)? glDisable(GL_LIGHT2) : glEnable(GL_LIGHT2);
+		glutPostRedisplay();
+	}
+	else if (c == 'm') {
+		light0_vertex++;
+		if (light0_vertex > 3)
+			light0_vertex = 0;
 		glutPostRedisplay();
 	}
 }
@@ -313,13 +372,15 @@ int main(int argc, char const *argv[]) {
 	// Escena //
 	////////////
 	ObjectGroup objs = ObjectGroup();
-	objs.add(new ObjectPlane(
-			Vector3f(-5, 0, -5),
-			Vector3f(-5, 0, 5),
-			Vector3f(5, 0, 5),
-			Vector3f(5, 0, -5),
-			Color(39, 174, 96)
-		), "terra");
+	objs.add("terra",
+			new ObjectPlane(
+			vertex_terra[0],
+			vertex_terra[1],
+			vertex_terra[2],
+			vertex_terra[3],
+			10,
+			Color(41, 128, 185)
+		));
 	
 	vel_patricio = 1.0f;
 	ObjectModel* patricio = new ObjectModel("DATA/Patricio.obj");
@@ -336,26 +397,26 @@ int main(int argc, char const *argv[]) {
 			 1.5/(patricio1->boundingBox().second.y - patricio1->boundingBox().first.y),
 			 1.5/(patricio1->boundingBox().second.y - patricio1->boundingBox().first.y)));
 	patricio1->translation(Vector3f(2.5,0.75,2.5));
-	objs.add(patricio1, "patricio1");
+	objs.add("patricio1", patricio1);
 
 	Object* s = makeSnowMan();
 	s->translation(s->translation() + Vector3f(2.5, 0, -2.5));
-	objs.add(s, "snowman0");
+	objs.add("snowman0", s);
 	s = makeSnowMan();
 	s->translation(s->translation() + Vector3f(-2.5, 0, 2.5));
-	objs.add(s, "snowman1");
+	objs.add("snowman1", s);
 	s = makeSnowMan();
 	s->translation(s->translation() + Vector3f(-2.5, 0, -2.5));
-	objs.add(s, "snowman2");
+	objs.add("snowman2", s);
 
 	ObjectGroup paredes = ObjectGroup();
-	paredes.add(new ObjectCube(Vector3f(0,0.75,-4.9), 10, 1.5, 0.2, Color(231, 76, 60)), "pared0");
-	paredes.add(new ObjectCube(Vector3f(1.5,0.75,2.5), 0.2, 1.5, 4, Color(231, 76, 60)), "pared1");
+	paredes.add("pared0", new ObjectCube(Vector3f(0,0.75,-4.9), 10, 1.5, 0.2, 10, Color(39, 201, 96), 0));
+	paredes.add("pared1", new ObjectCube(Vector3f(1.5,0.75,2.5), 0.2, 1.5, 4, 10, Color(39, 201, 96), 0));
 
 	scene = ObjectGroup();
-	scene.add(&objs, "objetos");
-	scene.add(&paredes, "paredes");
-	scene.add(patricio, "patricio");
+	scene.add("objetos", &objs);
+	scene.add("paredes", &paredes);
+	scene.add("patricio", patricio);
 
 	// Init GLUT
 	initGlut(argc, argv);

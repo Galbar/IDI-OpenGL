@@ -23,7 +23,23 @@ Vector3f::Vector3f(const Vector3f& v) {
 	init(v.x, v.y, v.z);
 }
 
+Vector3f::Vector3f(const Vector3f& v, const Vector3f& u) {
+	init(v.x - u.x, v.y - u.y, v.z - u.z);
+}
+
 Vector3f::Vector3f(const std::vector<float>& v) {
+	init(v[0], v[1], v[2]);
+}
+
+Vector3f::Vector3f(const float v[]) {
+	init(v[0], v[1], v[2]);
+}
+
+Vector3f::Vector3f(const std::vector<double>& v) {
+	init(v[0], v[1], v[2]);
+}
+
+Vector3f::Vector3f(const double v[]) {
 	init(v[0], v[1], v[2]);
 }
 
@@ -91,6 +107,10 @@ Vector3f Vector3f::rotatedYZ(float degrees) const{
 	return r.rotateYZ(degrees);
 }
 
+Vector3f Vector3f::operator- () {
+	return Vector3f(-x, -y, -z);
+}
+
 Vector3f& Vector3f::operator+= (const Vector3f& v) {
 	*this = Vector3f(x + v.x, y + v.y, z + v.z);
 	return *this;
@@ -141,7 +161,6 @@ float Vector3f::length() {
 		p_y = y;
 		p_z = z;
 		p_length = module(x, y, z);
-		std::cout << "hai" << std::endl;
 	}
 	return p_length;
 }

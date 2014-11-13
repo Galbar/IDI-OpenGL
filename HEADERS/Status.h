@@ -7,8 +7,6 @@ struct Status {
 	/*
 	  0 -> rotate scene
 	  1 -> walk mode
-	  2 -> 
-	  3 -> move legoman
 	  */
 	int mode;
 	// extra information needed for modes

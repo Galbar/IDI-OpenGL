@@ -24,9 +24,14 @@ public:
 
 	Vector3f(float xyz);
 	Vector3f(float x, float y, float z);
+	Vector3f(const Vector3f& v, const Vector3f& u);
 	Vector3f(const Vector3f& v);
+	Vector3f(const float v[]);
 	Vector3f(const std::vector<float>& v);
+	Vector3f(const double v[]);
+	Vector3f(const std::vector<double>& v);
 	Vector3f();
+	Vector3f operator -();
 	Vector3f& operator+= (const Vector3f& v);
 	Vector3f& operator-= (const Vector3f& v);
 	Vector3f& operator*= (const Vector3f& v);

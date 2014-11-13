@@ -9,7 +9,7 @@ void ObjectSphere::init(const Vector3f& p, float radio, int faces, const Color& 
 	p_shininess = shininess;
 
 	p_bounding_box = 
-		std::pair<Vector3f, Vector3f>(Vector3f() - Vector3f(p_radio, p_radio, p_radio),
+		std::pair<Vector3f, Vector3f>(-Vector3f(p_radio, p_radio, p_radio),
 									  Vector3f(p_radio, p_radio, p_radio));
 }
 

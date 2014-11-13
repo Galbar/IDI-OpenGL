@@ -14,7 +14,7 @@ private:
 public:
 	ObjectGroup();
 
-	bool add(Object* obj, std::string id);
+	bool add( std::string id, Object* obj);
 	Object* get(std::string id);
 	void remove(std::string id);
 	std::map<std::string, std::unique_ptr<Object>>::const_iterator begin() const;

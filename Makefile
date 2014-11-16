@@ -5,7 +5,7 @@ SDIR      = SOURCES
 ODIR      = $(SDIR)/obj
 BDIR      = build
 
-CFLAGS    = -I$(IDIR) -std=c++11
+CFLAGS    = -I$(IDIR) -std=c++11 -Wall
 LIBS      = -lglut -lGL -lGLU
 
 EXEC      = practica4

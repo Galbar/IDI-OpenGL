@@ -30,7 +30,7 @@ void ObjectPlane::init(const Vector3f& p1, const Vector3f& p2, const Vector3f& p
 	
 	Vector3f v = l_vertex[0];
 	p_bounding_box = std::pair<Vector3f, Vector3f>(v,v);
-	for (int i = 1; i < l_vertex.size(); ++i) {
+	for (unsigned int i = 1; i < l_vertex.size(); ++i) {
 		v = l_vertex[i];
 		if (p_bounding_box.first.x > v.x) p_bounding_box.first.x = v.x;
 		else if (p_bounding_box.second.x < v.x) p_bounding_box.second.x = v.x;

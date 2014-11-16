@@ -93,6 +93,13 @@ void initStatus() {
 	glutPostRedisplay();
 }
 
+void close() {
+	delete bkg_color;
+	delete app_status;
+	delete camera;
+	exit(0);
+}
+
 void printHelp() {
 	std::cout << "--- IDI: Practiques OpenGL - Practica 3 ---" << std::endl
 		  << "Accions en pressionar les tecles:" << std::endl
@@ -232,7 +239,7 @@ void keyboard(unsigned char c, int x, int y) {
 	std::cout << "[Keyboard]\tc:" << c << "\tx:" << x << "\ty:" << y << std::endl;
 #endif
 	if (c == '')
-		exit(0);
+		close();
 	else if (c == 'r') {
 		initStatus();
 		initGL();
@@ -383,7 +390,9 @@ int main(int argc, char const *argv[]) {
 		));
 	
 	vel_patricio = 1.0f;
-	ObjectModel* patricio = new ObjectModel("DATA/Patricio.obj");
+	Model* patricio_model = new Model();
+	patricio_model->load("DATA/Patricio.obj");
+	ObjectModel* patricio = new ObjectModel(patricio_model);
 	patricio->scale(Vector3f(
 			 1.0/(patricio->boundingBox().second.y - patricio->boundingBox().first.y),
 			 1.0/(patricio->boundingBox().second.y - patricio->boundingBox().first.y),
@@ -391,7 +400,7 @@ int main(int argc, char const *argv[]) {
 	patricio->translation(Vector3f(0,0.5,0));
 	patricio->rotation(Vector3f(0,-90,0));
 	
-	ObjectModel* patricio1 = new ObjectModel("DATA/Patricio.obj");
+	ObjectModel* patricio1 = new ObjectModel(patricio_model);
 	patricio1->scale(Vector3f(
 			 1.5/(patricio1->boundingBox().second.y - patricio1->boundingBox().first.y),
 			 1.5/(patricio1->boundingBox().second.y - patricio1->boundingBox().first.y),

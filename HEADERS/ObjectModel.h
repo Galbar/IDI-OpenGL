@@ -1,16 +1,16 @@
 #ifndef OBJECT_MODEL
 #define OBJECT_MODEL
 
-#include <string>
+#include <memory>
 #include "Object.h"
 #include "Model.h"
 
 class ObjectModel: public Object {
 private:
-	Model p_model;
+	std::shared_ptr<const Model> p_model;
 	std::pair<Vector3f, Vector3f> calcBoundingBox() const;
 public:
-	ObjectModel(const std::string& src);
+	ObjectModel(const Model* model);
 
 	void onDraw() const;
 };
